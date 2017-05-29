@@ -85,6 +85,7 @@ class WP_Mock {
 
 	/**
 	 * Bootstrap WP_Mock
+	 * @throws \RuntimeException
 	 */
 	public static function bootstrap() {
 		if ( ! self::$__bootstrapped ) {
@@ -98,14 +99,17 @@ class WP_Mock {
 					'../..',
 				);
 				$patchwork_path     = 'antecedent/patchwork/Patchwork.php';
+				$path               = null;
 				foreach ( $possible_locations as $loc ) {
 					$path = __DIR__ . "/../$loc/$patchwork_path";
 					if ( file_exists( $path ) ) {
 						break;
 					}
 				}
-				// Will cause a fatal error if patchwork can't be found
-				require_once( $path );
+				if ( null === $path ) {
+					throw new RuntimeException( 'Unable to find Patchwork!' );
+				}
+				require_once $path;
 			}
 			self::setUp();
 		}
@@ -113,6 +117,7 @@ class WP_Mock {
 
 	/**
 	 * Make sure Mockery doesn't have anything set up already.
+	 * @throws \RuntimeException
 	 */
 	public static function setUp() {
 		if ( self::$__bootstrapped ) {
@@ -255,7 +260,7 @@ class WP_Mock {
 	}
 
 	/**
-	 * Add an expection that an action should not be added. A wrapper
+	 * Add an expectation that an action should not be added. A wrapper
 	 * around the expectHookNotAdded function.
 	 *
 	 * @param string   $action   The action hook name
