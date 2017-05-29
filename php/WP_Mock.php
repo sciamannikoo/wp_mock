@@ -398,7 +398,7 @@ class WP_Mock {
 	 *
 	 * @return Mockery\Expectation
 	 */
-	public static function userFunction( $function_name, $arguments = array() ) {
+	public static function userFunction( $function_name, array $arguments = array() ) {
 		return self::$function_manager->register( $function_name, $arguments );
 	}
 
@@ -412,7 +412,7 @@ class WP_Mock {
 	 *
 	 * @return Mockery\Expectation
 	 */
-	public static function wpFunction( $function_name, $arguments = array() ) {
+	public static function wpFunction( $function_name, array $arguments = array() ) {
 		static::getDeprecatedListener()->logDeprecatedCall( __METHOD__, array( $function_name, $arguments ) );
 		return self::userFunction( $function_name, $arguments );
 	}
@@ -431,7 +431,7 @@ class WP_Mock {
 	 *
 	 * @return Mockery\Expectation
 	 */
-	public static function echoFunction( $function_name, $arguments = array() ) {
+	public static function echoFunction( $function_name, array $arguments = array() ) {
 		$arguments           = (array) $arguments;
 		$arguments['return'] = function ( $param ) {
 			echo $param;
@@ -453,7 +453,7 @@ class WP_Mock {
 	 *
 	 * @return Mockery\Expectation
 	 */
-	public static function passthruFunction( $function_name, $arguments = array() ) {
+	public static function passthruFunction( $function_name, array $arguments = array() ) {
 		$arguments           = (array) $arguments;
 		$arguments['return'] = function ( $param ) {
 			return $param;
@@ -471,7 +471,7 @@ class WP_Mock {
 	 *
 	 * @return Mockery\Expectation
 	 */
-	public static function wpPassthruFunction( $function_name, $arguments = array() ) {
+	public static function wpPassthruFunction( $function_name, array $arguments = array() ) {
 		static::getDeprecatedListener()->logDeprecatedCall( __METHOD__, array( $function_name, $arguments ) );
 		return self::passthruFunction( $function_name, $arguments );
 	}
@@ -487,7 +487,7 @@ class WP_Mock {
 	 *
 	 * @return Mockery\Expectation
 	 */
-	public static function alias( $function_name, $alias, $arguments = array() ) {
+	public static function alias( $function_name, $alias, array $arguments = array() ) {
 		$arguments = (array) $arguments;
 		if ( is_callable( $alias ) ) {
 			$arguments['return'] = function () use ( $alias ) {
